@@ -1,4 +1,5 @@
 #include "init.h"
+#include "monster.h"
 
 int main()
 {
