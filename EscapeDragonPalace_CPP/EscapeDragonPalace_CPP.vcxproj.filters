@@ -29,5 +29,11 @@
     <ClInclude Include="monster.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="crab.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="data.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
