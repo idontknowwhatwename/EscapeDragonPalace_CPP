@@ -130,11 +130,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="monster.cpp" />
     <ClCompile Include="weapon.cpp" />
+    <ClCompile Include="item.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crab.h" />
     <ClInclude Include="init.h" />
     <ClInclude Include="data.h" />
+    <ClInclude Include="item.h" />
     <ClInclude Include="monster.h" />
     <ClInclude Include="weapon.h" />
   </ItemGroup>
