@@ -1,6 +1,7 @@
 #pragma once
 #include "init.h"
 
+// 무기 클래스
 class Weapon
 {
 public:
