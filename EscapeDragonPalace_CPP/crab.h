@@ -32,14 +32,13 @@ const static char g_CrabGraphic[2][CRAB_HEIGHT][CRAB_WIDTH] =
 };
 
 // 클래스
-class Crab : Monster
+class Crab : public MonsterSkill
 {
 	MyPoint pos;		// 위치
 	float startPosX;	// 시작 x 위치
 };
 
-// 스킬 클래스
-class MonsterSkill
+class MonsterSkill : public Monster
 {
 	bool isAttack;		// 스킬 사용 중인지 여부
 	int attackCnt;		// 스킬 구현 횟수
