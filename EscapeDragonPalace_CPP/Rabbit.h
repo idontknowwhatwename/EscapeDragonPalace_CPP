@@ -26,12 +26,15 @@ using namespace std;
 
 //===============================================================================
 
+
 class Rabbit
 {
 protected:
 	int HP;				 	// 토끼 체력
 	float x, y; 			// 토끼 위치
-	int Direction;			// 토끼 방향 (0: 오른쪽, 1: 왼쪽)
+	int Dir;			// 토끼 방향 (0: 오른쪽, 1: 왼쪽)
+
+	int spriteIndex;		// 현재 스프라이트 인덱스
 
 	float Speed; 			// 토끼 이동 속도
 	float velY;				// 토끼 수직 속도
@@ -48,17 +51,17 @@ public:
 	Rabbit();				// 생성자
 	virtual ~Rabbit();		// 소멸자
 
+	void SetSpriteIdx(int weaponType); // 스프라이트 설정
 	void Draw();			// 그리기
 	void Move();			// 이동
+	void Update();			// 상태 업데이트
 	void Jump();			// 점프
 	void Attack();			// 공격
 	void GravityEffect();	// 중력 효과 적용
-	void Update();			// 상태 업데이트
 	void TakeDamage();		// 데미지 처리
 	float GetX() const { return x; } // X 좌표 반환
 	float GetY() const { return y; } // Y 좌표 반환
 	bool GetIsInvincible() const { return isInvincible; } // 무적 상태 반환
 };
 
-
-int g_Key;	// 입력 키
+//===============================================================================
