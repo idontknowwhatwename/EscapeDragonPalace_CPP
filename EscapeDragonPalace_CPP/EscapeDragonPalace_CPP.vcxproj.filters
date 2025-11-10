@@ -9,15 +9,15 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Assets">
       <UniqueIdentifier>{bd4b7bdb-f73f-45a8-abdc-30773a066cf5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core">
-      <UniqueIdentifier>{4dba03ae-494c-4c24-9de3-44254ed09341}</UniqueIdentifier>
+      <UniqueIdentifier>{aabd458f-b65f-4062-8fc6-85115c1e8eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +41,15 @@
     </ClCompile>
     <ClCompile Include="mtg.c">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="MapManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Rabbit.cpp">
+      <Filter>소스 파일\리소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +77,15 @@
     <ClInclude Include="mtg.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="MapManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Rabbit.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="map_dragonPalace.txt">
@@ -85,10 +103,5 @@
     <Text Include="map_sea2.txt">
       <Filter>Assets</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="monsterData.json">
-      <Filter>리소스 파일</Filter>
-    </None>
   </ItemGroup>
 </Project>

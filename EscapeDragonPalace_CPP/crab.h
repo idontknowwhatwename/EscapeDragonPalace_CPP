@@ -9,8 +9,13 @@ enum CrabStatus
 
 class Crab : Monster
 {
-	Skill skill;	// 스킬 구현 (1개)
+	// 스킬
+	bool isAttack;		// 스킬 사용 중인지 여부
+	int attackCnt;		// 스킬 구현 횟수
+	int attack;			// 스킬 공격력
+	long coolTime;		// 스킬 쿨타임 (ms)
 
+	// 일반
 	float startPosX;	// 시작 x 위치
 	CrabStatus attackStatus;	// 몬스터 공격 상태 (그래픽)
 
