@@ -25,19 +25,3 @@ public:
 	Monster();
 	virtual ~Monster();
 };
-
-class Skill
-{
-protected:
-	// 스킬
-	bool isAttack;		// 스킬 사용 중인지 여부
-	int attackCnt;		// 스킬 구현 횟수
-	int attack;			// 스킬 공격력
-	long coolTime;		// 스킬 쿨타임 (ms)
-
-public:
-	bool getIsAttack();
-	int getAttackCnt();
-	int getAttack();
-	long getCoolTime();
-};

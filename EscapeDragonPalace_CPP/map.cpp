@@ -1,30 +1,39 @@
 #include "init.h"
 #include "map.h"
-
+#include "MapManager.h"
 
 // 생성자
 Maps::Maps()
 {
-	ifstream fin;		// 파일 입력 스트림 객체 생성
-	
-	this->status = E_MapStatus::Jail;	// 첫 번째 맵: 감옥
 
-
-	fin.open("map_jail.txt");
-	if (!fin)
-	{
-		cout << "파일 열기 실패" << endl;
-		return;
-	}
-
-	while (fin.get() != EOF)
-	{
-
-	}
-
-	cout << str[0] << endl;
-	cout << str[1] << endl;
-	cout << str[2] << endl;
-	cout << str[3] << endl;
-	cout << str[4] << endl;
 }
+
+// 소멸자
+Maps::~Maps()
+{
+
+}
+
+// 맵 데이터 불러오기 (파일 입출력)
+//void Maps::GetMapData(string p_file)
+//{
+//	fstream fin;
+//	string tempStr;
+//
+//	fin.open(p_file, 'r');		// 읽기 전용으로 불러오기
+//
+//	// 파일이 없을 경우
+//	if (!fin.is_open())
+//	{
+//		cout << "파일이 없습니다." << endl;
+//		return;
+//	}
+//
+//	while (getline(fin, tempStr))
+//	{
+//		cout << tempStr << endl;
+//		//this->m_mapArr[this->m_mapStatus] = tempStr;
+//	}
+//
+//	fin.close();
+//}
