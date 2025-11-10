@@ -1,5 +1,6 @@
 #include "init.h"
 #include "data.h"
+#include "Rabbit.h"
 #include "monster.h"
 #include "MapManager.h"
 #include "mtg.h"
@@ -22,18 +23,30 @@ void MyPoint::setY(float p_y)
 	this->y = p_y;
 }
 
-// 전역변수
-static int g_Key;	// 입력 키
+// 업데이트 함수
+void Update()
+{
+	Rabbit rabbit;
+	rabbit.Update();
+}
 
 // 그리기 함수
 void Draw()
 {
-
+	Rabbit rabbit;
+	rabbit.Draw();
 }
 
 int main()
 {
-	cout << "Hello World" << endl;
+	_BeginWindow();
 
+	while (true)
+	{
+		Update();
+		_Invalidate();
+	}
+
+	_EndWindow();
 	return 0;
 }
