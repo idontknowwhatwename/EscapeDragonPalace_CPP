@@ -182,9 +182,10 @@ void Item::DrawItem()
 				break;
 			}
 
-			int FocusX = MapManager::GetInstance()->GetFocusX();
 
-			int tempX = itemList[i]->x - FocusX;
+			MapManager* MapMgr = MapManager::GetInstance();
+
+			int tempX = itemList[i]->x - MapMgr->GetFocusX();
 			char buf[2];
 
 			switch (itemList[i]->itemType)
@@ -202,7 +203,7 @@ void Item::DrawItem()
 						if (0 <= tempX + col && SCREEN_WIDTH >= tempX + col)
 						{
 
-							buf[0] = (itemList[i]->sprite)[g_Frame][row][col];
+							buf[0] = line[col];
 							buf[1] = '\0';
 							_DrawText(tempX + col, itemList[i]->y + row, buf);
 						}
@@ -211,7 +212,7 @@ void Item::DrawItem()
 				break;
 			case E_ITEM_DEBUFF:
 				// 조개일 경우 프레임 없이 출력
-				const string& line = (itemList[i]->sprite)[g_Frame][0];
+				const string& line = (itemList[i]->sprite)[0][0];
 				for (int col = 0; col < itemList[i]->width; col++)
 					if (0 <= tempX + col && SCREEN_WIDTH >= tempX + col)
 					{
