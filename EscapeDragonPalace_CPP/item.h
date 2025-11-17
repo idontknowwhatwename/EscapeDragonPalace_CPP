@@ -22,7 +22,6 @@ protected:
 	float width, height; // 크기
 	ItemType itemType;  // 아이템 종류
 	E_MapStatus mapStatus; // 아이템이 존재하는 맵
-	const string sprite;
 	const string sprite[2][3];
 
 public:
