@@ -1,5 +1,6 @@
 #pragma once
 #include "init.h"
+#include "MapManager.h"
 
 // 아이템 종류 열거형
 typedef enum
@@ -17,10 +18,17 @@ protected:
 	bool isHeld;        // 소지 여부
 	float width, height; // 크기
 	ItemType itemType;  // 아이템 종류
+	E_MapStatus mapStatus; // 아이템이 존재하는 맵
 
 public:
 	Item(); // 기본 생성자
-	static vector<Item*> InitItem(); // 아이템 초기화
+
+	// 함수
+	void InitItem();        // 아이템 초기화
+	void DrawItem();        // 아이템 그리기
+	void ResetItem();       // 아이템 isHeld false로 초기화
+	void ItemFrameDelay();  // 아이템 모션 효과
+
 	virtual ~Item() {};              // 소멸자 (가상)
 };
 
@@ -42,7 +50,7 @@ protected:
 	};
 
 public:
-	SEAWEED(float p_x, float p_y, bool p_isHeld);
+	SEAWEED(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus);
 	virtual ~SEAWEED() {};
 };
 
@@ -62,7 +70,7 @@ protected:
 	};
 
 public:
-	BUBBLES(float p_x, float p_y, bool p_isHeld);
+	BUBBLES(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus);
 	virtual ~BUBBLES() {};
 };
 
@@ -73,6 +81,6 @@ protected:
 	const string sprite = "(\\ /)"; // 조개 모양
 
 public:
-	CLAM(float p_x, float p_y, bool p_isHeld);
+	CLAM(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus);
 	virtual ~CLAM() {};
 };
