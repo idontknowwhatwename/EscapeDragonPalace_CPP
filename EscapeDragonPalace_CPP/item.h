@@ -2,6 +2,9 @@
 #include "init.h"
 #include "MapManager.h"
 
+#define MAX_ITEM_COUNT 100      // 맵에 등장할 수 있는 아이템 인스턴스 수
+
+
 // 아이템 종류 열거형
 typedef enum
 {
@@ -19,6 +22,8 @@ protected:
 	float width, height; // 크기
 	ItemType itemType;  // 아이템 종류
 	E_MapStatus mapStatus; // 아이템이 존재하는 맵
+	const string sprite;
+	const string sprite[2][3];
 
 public:
 	Item(); // 기본 생성자
@@ -84,3 +89,4 @@ public:
 	CLAM(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus);
 	virtual ~CLAM() {};
 };
+

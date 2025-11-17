@@ -1,5 +1,15 @@
 #include "item.h"
 #include "data.h"
+#include "MapManager.h"
+
+vector<Item*> itemList;
+
+int g_ItemIdx = 0;		// 아이템 개수 초기화
+int g_Frame = 0;		// 아이템 모션효과용 frame 초기화
+
+clock_t g_LastFrameTime = 0;	// 프레임 전환용 변수
+const int g_FrameDelay = 400;	// 400ms마다 프레임 전환
+
 
 // 기본 생성자
 Item::Item()
@@ -131,12 +141,6 @@ void Item::InitItem()
 	};
 }
 
-int g_ItemIdx = 0;		// 아이템 개수 초기화
-int g_Frame = 0;		// 아이템 모션효과용 frame 초기화
-
-clock_t g_LastFrameTime = 0;	// 프레임 전환용 변수
-const int g_FrameDelay = 400;	// 400ms마다 프레임 전환
-
 // 아이템 모션효과 frame 계산 함수
 void Item::ItemFrameDelay()
 {
@@ -160,20 +164,17 @@ void Item::DrawItem()
 	for (int i = 0; i < g_ItemIdx; i++)
 	{
 		// 아이템이 바닥에 있을 때만 그리기 ( 현재 스테이지에 플레이어가 먹지 않은 아이템만 그리기 )
-		if (!g_ItemList[i].isHeld)
+		if (!itemList[i]->isHeld)
 		{
 
-			SpriteType* sprite = 0;
 
 			// 아이템 타입에 따라 해초 or 공기방울 or 조개 sprite 선택
-			switch (g_ItemList[i].type)
+			switch (itemList[i]->itemType)
 			{
 			case E_ITEM_LIFE:	// 체력증가(해초)일 때
-				sprite = &g_SeaweedSprite;
 				_SetColor(E_Green);
 				break;
 			case E_ITEM_SPEED:	// 속도증가(공기방울)일 때
-				sprite = &g_BubblesSprite;
 				_SetColor(E_BrightTeal);
 				break;
 			case E_ITEM_DEBUFF:	// 속도감소(조개)일 때
@@ -181,31 +182,42 @@ void Item::DrawItem()
 				break;
 			}
 
-			int tempX = g_ItemList[i].x - GetPlusX();
+			int FocusX = MapManager::GetInstance()->GetFocusX();
 
-			switch (g_ItemList[i].type)
+			int tempX = itemList[i]->x - FocusX;
+			char buf[2];
+
+			switch (itemList[i]->itemType)
 			{
-			case E_ITEM_LIFE: case E_ITEM_SPEED:
-				for (int row = 0; row < g_ItemList[i].height; row++)
-				{
-					if ((*sprite)[g_Frame][row] == '\0') break;  // 공백 줄이면 중단
 
-					for (int col = 0; col < g_ItemList[i].width; col++)
+			case E_ITEM_LIFE: case E_ITEM_SPEED:
+				for (int row = 0; row < itemList[i]->height; row++)
+				{
+					const string& line = (itemList[i]->sprite)[g_Frame][row];
+					if (line.empty()) break;  // 빈 줄이면 중단
+
+					for (int col = 0; col < itemList[i]->width; col++)
 					{
 						// 아이템 위치가 화면 내에 있을 때만 출력
 						if (0 <= tempX + col && SCREEN_WIDTH >= tempX + col)
 						{
-							_DrawText(tempX + col, g_ItemList[i].y + row, (char[]) { (*sprite)[g_Frame][row][col], 0 });
+
+							buf[0] = (itemList[i]->sprite)[g_Frame][row][col];
+							buf[1] = '\0';
+							_DrawText(tempX + col, itemList[i]->y + row, buf);
 						}
 					}
 				}
 				break;
 			case E_ITEM_DEBUFF:
 				// 조개일 경우 프레임 없이 출력
-				for (int col = 0; col < g_ItemList[i].width; col++)
+				const string& line = (itemList[i]->sprite)[g_Frame][0];
+				for (int col = 0; col < itemList[i]->width; col++)
 					if (0 <= tempX + col && SCREEN_WIDTH >= tempX + col)
 					{
-						_DrawText(tempX + col, g_ItemList[i].y, (char[]) { g_ClamSprite[col], 0 });
+						buf[0] = line[col];
+						buf[1] = '\0';
+						_DrawText(tempX + col, itemList[i]->y, buf);
 					}
 				break;
 			}
@@ -219,6 +231,6 @@ void Item::ResetItem()
 	g_ItemIdx = 0;
 	for (int i = 0; i < MAX_ITEM_COUNT; i++)
 	{
-		g_ItemList[i].isHeld = false;
+		itemList[i]->isHeld = false;
 	}
 }
