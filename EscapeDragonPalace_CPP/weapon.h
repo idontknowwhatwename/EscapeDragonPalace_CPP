@@ -3,8 +3,6 @@
 
 #define NUMWEAPON 3 // 무기 종류 갯수
 
-char buffer[50];				// 무기 정보 출력용 버퍼
-
 
 class Weapon
 {
@@ -17,40 +15,61 @@ protected:
 public:
     Weapon();
 
-    // 함수
-    void SelectWeapon();		// 무기 선택 함수
-    int GetSelectedIndex();		// 선택된 무기 인덱스 반환 함수
-    bool GetWeaponChosen();		// 무기 선택 여부 반환 함수
-    void SetWeaponChosen(bool src);		// 무기 선택 여부 설정 함수
-    void InitWeapon();	// 무기 초기화 함수
-    void DrawWeapon(vector<Weapon*> w, int i, int isSelected); // 무기 정보 출력 함수
+    string GetName() const;
+    int GetAttack() const;
+    int GetAttackSpeed() const;
+    string GetSprite() const;
 
-    virtual ~Weapon() {};
+    virtual ~Weapon();
 };
 
 class LongSword : public Weapon
 {
-protected:
-    string sprite = "--|====>";
 public:
     LongSword();
-	virtual ~LongSword() {};
+	virtual ~LongSword();
 };
 
 class ShortSword : public Weapon
 {
-protected:
-	string sprite = "-|=>";
 public:
 	ShortSword();
-	virtual ~ShortSword() {};
+	virtual ~ShortSword();
 };
 
 class Spear : public Weapon
 {
-protected:
-    string sprite = "------>";
 public:
 	Spear();
-	virtual ~Spear() {};
+	virtual ~Spear();
+};
+
+class WeaponManager
+{
+private:
+    static WeaponManager* weapon_Instance;
+
+    vector<Weapon*> weaponList;   // 전체 아이템
+
+    int selectedIndex = 0;   // 현재 선택 중인 무기 인덱스
+    bool weaponChosen = false;  // Enter로 선택했는지 여부
+
+public:
+    WeaponManager();
+    static WeaponManager* GetInstance();
+    static void ReleaseInstance();  // 싱글톤 해제 함수
+
+    void InitWeapon();                  // 무기 초기화 함수
+    const vector<Weapon*>& GetWeaponList() const;
+
+    int GetSelectedIndex() const;
+    void SetSelectedIndex(int idx);
+
+    bool IsWeaponChosen() const;
+    void SetWeaponChosen(bool val);
+
+    void SelectWeapon();
+    void DrawWeapons();
+
+    virtual ~WeaponManager();
 };

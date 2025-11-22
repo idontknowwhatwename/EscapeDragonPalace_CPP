@@ -1,6 +1,4 @@
 #include "item.h"
-#include "data.h"
-#include "MapManager.h"
 
 
 ItemManager* ItemManager::item_Instance = nullptr;
@@ -15,6 +13,15 @@ ItemManager* ItemManager::GetInstance()
 	return ItemManager::item_Instance;
 }
 
+void ItemManager::ReleaseInstance()
+{
+	if (item_Instance != nullptr)
+	{
+		delete item_Instance;
+		item_Instance = nullptr;
+	}
+}
+
 // 기본 생성자
 Item::Item()
 {
@@ -25,6 +32,19 @@ Item::Item()
 	height = 0;
 	itemType = E_ITEM_SPEED; // 기본값
 }
+
+bool Item::GetIsHeld() const { return isHeld; }
+void Item::SetIsHeld(bool val) { isHeld = val; }
+float Item::GetX() const { return x; }
+float Item::GetY() const { return y; }
+int Item::GetWidth() const { return width; }
+int Item::GetHeight() const { return height; }
+ItemType Item::GetItemType() const { return itemType; }
+E_MapStatus Item::GetMapStatus() const { return mapStatus; }
+
+// 기본 소멸자
+Item::~Item() {}
+
 
 // 해초 생성자
 SEAWEED::SEAWEED(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus)
@@ -38,6 +58,15 @@ SEAWEED::SEAWEED(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus)
 	mapStatus = p_mapStatus;
 }
 
+// 해초 스프라이트 반환 함수
+const vector<string>& SEAWEED::GetSpriteFrame(int frame) const
+{
+	return sprite[frame % (int)sprite.size()];
+}
+
+// 해초 소멸자
+SEAWEED::~SEAWEED() {}
+
 // 공기방울 생성자
 BUBBLES::BUBBLES(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus)
 {
@@ -50,6 +79,16 @@ BUBBLES::BUBBLES(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus)
 	mapStatus = p_mapStatus;
 }
 
+// 공기방울 스프라이트 반환 함수
+const vector<string>& BUBBLES::GetSpriteFrame(int frame) const
+{
+	return sprite[frame % (int)sprite.size()];
+}
+
+// 공기방울 소멸자
+BUBBLES::~BUBBLES() {}
+
+
 // 조개 생성자
 CLAM::CLAM(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus)
 {
@@ -60,6 +99,20 @@ CLAM::CLAM(float p_x, float p_y, bool p_isHeld, E_MapStatus p_mapStatus)
 	height = 1;
 	itemType = E_ITEM_DEBUFF;
 	mapStatus = p_mapStatus;
+}
+
+// 조개 스프라이트 반환 함수
+const vector<string>& CLAM::GetSpriteFrame(int frame) const
+{
+	return sprite[frame % (int)sprite.size()];
+}
+
+// 조개 소멸자
+CLAM::~CLAM() {}
+
+ItemManager::ItemManager() : frame(0), lastFrameTime(clock())
+{
+	itemList.clear();
 }
 
 // 아이템 초기화 함수
@@ -194,17 +247,20 @@ void ItemManager::DrawItems(E_MapStatus currentMap)
 			{
 
 			case E_ITEM_LIFE: case E_ITEM_SPEED:
-				for (int row = 0; row < itemList[i]->GetHeight(); row++)
+			{
+				const vector<string>& sprite = itemList[i]->GetSpriteFrame(frame);
+				int maxRows = min((int)sprite.size(), itemList[i]->GetHeight());
+				for (int row = 0; row < maxRows; row++)
 				{
-					const string& line = (itemList[i]->GetSprite())[frame][row];
+					const string& line = sprite[row];
 					if (line.empty()) break;  // 빈 줄이면 중단
 
-					for (int col = 0; col < itemList[i]->GetWidth(); col++)
+					int maxCols = min((int)line.size(), itemList[i]->GetWidth());
+					for (int col = 0; col < maxCols; col++)
 					{
 						// 아이템 위치가 화면 내에 있을 때만 출력
 						if (0 <= tempX + col && SCREEN_WIDTH > tempX + col)
 						{
-
 							buf[0] = line[col];
 							buf[1] = '\0';
 							_DrawText(tempX + col, itemList[i]->GetY() + row, buf);
@@ -212,17 +268,29 @@ void ItemManager::DrawItems(E_MapStatus currentMap)
 					}
 				}
 				break;
+			}
+				
 			case E_ITEM_DEBUFF:
+			{
 				// 조개일 경우 프레임 없이 출력
-				const string& line = (itemList[i]->GetSprite())[0][0];
-				for (int col = 0; col < itemList[i]->GetWidth(); col++)
-					if (0 <= tempX + col && SCREEN_WIDTH > tempX + col)
+				const vector<string>& sprite = itemList[i]->GetSpriteFrame(0);
+				if (!sprite.empty())
+				{
+					const string& line = sprite[0];
+					int maxCols = min((int)line.size(), itemList[i]->GetWidth()); // CHANGED
+					for (int col = 0; col < maxCols; col++)
 					{
-						buf[0] = line[col];
-						buf[1] = '\0';
-						_DrawText(tempX + col, itemList[i]->GetY(), buf);
+						if (0 <= tempX + col && SCREEN_WIDTH > tempX + col)
+						{
+							buf[0] = line[col];
+							buf[1] = '\0';
+							_DrawText(tempX + col, itemList[i]->GetY(), buf);
+						}
 					}
+
+				}
 				break;
+			}	
 			}
 		}
 	}
@@ -238,9 +306,13 @@ void ItemManager::ResetItems(E_MapStatus map)
 	}
 }
 
-Item::~Item()
-{
-}
+
+int ItemManager::GetFrame() const { return frame; }
+void ItemManager::SetFrame(int val) { frame = val; }
+clock_t ItemManager::GetLastFrameTime() const { return lastFrameTime; }
+void ItemManager::SetLastFrameTime(clock_t val) { lastFrameTime = val; }
+int ItemManager::GetFrameDelay() const { return frameDelay; }
+
 
 ItemManager::~ItemManager()
 {
